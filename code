@@ -1,0 +1,123 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Product class
+class Product {
+public:
+    string name;
+    float price;
+    int quantity;
+
+    Product(string n, float p, int q) {
+        name = n;
+        price = p;
+        quantity = q;
+    }
+
+    float getTotalPrice() {
+        return price * quantity;
+    }
+};
+
+// Shopping Cart class
+class ShoppingCart {
+private:
+    vector<Product> cart;
+
+public:
+    void addProduct(string name, float price, int quantity) {
+        cart.push_back(Product(name, price, quantity));
+        cout << "Product added to cart!\n";
+    }
+
+    void removeProduct(string name) {
+        for (int i = 0; i < cart.size(); i++) {
+            if (cart[i].name == name) {
+                cart.erase(cart.begin() + i);
+                cout << "Product removed!\n";
+                return;
+            }
+        }
+        cout << "Product not found!\n";
+    }
+
+    void displayCart() {
+        if (cart.empty()) {
+            cout << "Cart is empty!\n";
+            return;
+        }
+
+        cout << "\nItems in Cart:\n";
+        for (int i = 0; i < cart.size(); i++) {
+            cout << i + 1 << ". " << cart[i].name 
+                 << " | Price: " << cart[i].price 
+                 << " | Quantity: " << cart[i].quantity 
+                 << " | Total: " << cart[i].getTotalPrice() << endl;
+        }
+    }
+
+    void calculateTotal() {
+        float total = 0;
+        for (int i = 0; i < cart.size(); i++) {
+            total += cart[i].getTotalPrice();
+        }
+        cout << "\nTotal Bill: " << total << endl;
+    }
+};
+
+// Main function
+int main() {
+    ShoppingCart cart;
+    int choice;
+    string name;
+    float price;
+    int quantity;
+
+    do {
+        cout << "\n--- Online Shopping Cart ---\n";
+        cout << "1. Add Product\n";
+        cout << "2. Remove Product\n";
+        cout << "3. View Cart\n";
+        cout << "4. Calculate Total\n";
+        cout << "5. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter product name: ";
+            cin >> name;
+            cout << "Enter price: ";
+            cin >> price;
+            cout << "Enter quantity: ";
+            cin >> quantity;
+            cart.addProduct(name, price, quantity);
+            break;
+
+        case 2:
+            cout << "Enter product name to remove: ";
+            cin >> name;
+            cart.removeProduct(name);
+            break;
+
+        case 3:
+            cart.displayCart();
+            break;
+
+        case 4:
+            cart.calculateTotal();
+            break;
+
+        case 5:
+            cout << "Thank you for shopping!\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
